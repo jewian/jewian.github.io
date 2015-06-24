@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>业言 Randy Huang</title>
+    <link href="http://wenye.info/feed.xml" rel="self"/>
+    <link href="http://wenye.info"/>
+    <updated>2015-06-24T02:58:29.583Z</updated>
+    <id>http://wenye.info</id>
+    <author>
+        <name>Randy Huang</name>
+        <email>i@wenye.info</email>
+    </author>
+
+    
+    <entry>
+        <title>用Sonatype Nexus来为Gradle搭建本地maven仓库</title>
+        <link href="http://wenye.info/posts/setup-nexus-as-local-maven-repository/"/>
+        <updated>2015-06-19T16:00:00.000Z</updated>
+        <id>tag:wenye.info,2015-06-19,/posts/setup-nexus-as-local-maven-repository/</id>
+        <content type="html"><![CDATA[<p>不知道什么原因,国很很少maven公共仓库(我是搜不到了). <a href="http://maven.oschina.net/content/groups/public/">oschina的公共仓库</a>在我这里也时快时慢,有时还不如直接用国外的.</p>
+<p>最近经常学习github上一些优秀例子,每次在本地build的时候都要漫长的下载依赖jar包的等待. 下载下来的项目基本都是基于<a href="https://maven.apache.org/">Maven</a>或<a href="https://gradle.org/">Gradle</a>. 由于Maven和Gradle的本地缓存位置不同,同一个依赖基本也要从远程仓库下载下来两次.</p>
+<p>参考了网上一些大神的做法,决定也使用<a href="http://www.sonatype.org/nexus/">Sonatype Nexus</a>来建立一个本地的Maven仓库(对自己来说就是本机). Maven官方也有<a href="https://maven.apache.org/repository-management.html">一篇文章</a>介绍建立本地仓库的好处.</p>
+<h2>1. 下载安装Sonatype Nexus</h2>
+<p>到<a href="http://www.sonatype.org/nexus/go/">Sonatype Nexus官网</a>可以选择下载tar.gz或zip压缩包. 按<a href="https://sonatype-download.global.ssl.fastly.net/nexus/oss/nexus-latest-bundle.tar.gz">这里</a>直接一下tar.gz格式的压缩包(国内最好使用迅雷等下载工具下载).</p>
+<p>解压之后进入<code>bin</code>目录下执行<code>nexus install</code>安装. 完成后会有一个名字为nexus的windows服务.</p>
+<blockquote>
+<p>cd nexus-2.11.2-06\bin</p>
+<p>nexus install</p>
+</blockquote>
+<h2>2. 启动Nexus服务</h2>
+<p>在<code>bin</code>目录下使用命令<code>nexus start</code>和<code>nexus stop</code>来启动和停止服务. (当然直接去windows服务那边启动停止也行)</p>
+<blockquote>
+<p>nexus start</p>
+</blockquote>
+<p>启动成功后,用浏览器就可以访问<code>localhost:8081/nexus</code>.</p>
+<p><img src="http://wenye.info/stuff/nexus-welcome-page.png" alt="Nexus Welcome Page"></p>
+<p>至此,本地的maven仓库已经安装成功. 本地公共仓库地址为: <code>http://localhost:8081/nexus/content/groups/public/</code>. 如果需要新建仓库可以用admin/admin123登录.</p>
+<h2>3. 配置Gradle使用本地仓库</h2>
+<p>配置Gradle有两种方法.</p>
+<h1>3.1 简单配置</h1>
+<p>在每个项目的build.gradle声明使用本地maven仓库:</p>
+<pre><code class="lang-groovy">repositories {
+    maven {
+        url &quot;http://localhost:8081/nexus/content/groups/public&quot;
+    }
+}</code></pre>
+<h1>3.2 全局配置</h1>
+<p>通过全局配置,使本地所有的Gradle项目都默认使用本地仓库. 在(用户目录/.gradle)下的<code>init.gradle</code>(如果没有则新建一个)加入:</p>
+<pre><code class="lang-groovy">allprojects {
+  ext.RepoConfigurator = {
+    maven {
+      url = uri(&#39;http://localhost:8081/nexus/content/groups/public&#39;) }
+  }
+  buildscript.repositories RepoConfigurator
+  repositories RepoConfigurator
+}</code></pre>
+<p>推荐使用这种全局配置的方法,项目上传到github也不需要对build.grade文件做另外的修改.</p>
+<p>简单测试了一下,新建一个空的Gradle项目,build的时候能够去本地的Nexus仓库去下载依赖.</p>
+<blockquote>
+<p>gradle init --type java-library</p>
+<p>gradle build</p>
+</blockquote>
+<p><img src="http://wenye.info/stuff/gradle-init-build.png" alt="&#27979;&#35797;&#26412;&#22320;Nexus&#20179;&#24211;"></p>
+<h2>4. 存在问题</h2>
+<p>Nexus服务器会保存一份本地所有项目用过的依赖. Maven和Gradle也分别有自己的缓存. 这样最多一个依赖在本地就会有三份复制. 如何能够禁止缓存减少硬盘空间占用还值得研究.</p>
+<blockquote>
+<p>暂时还觉得不大可能,因为Maven和Gradle本地缓存还会被在Eclipse等IDE里面引用.</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+        <title>Running SqlTools on 64bit Oracle Client</title>
+        <link href="http://wenye.info/posts/running-sqltools-on-64bit-client/"/>
+        <updated>2014-03-19T16:00:00.000Z</updated>
+        <id>tag:wenye.info,2014-03-19,/posts/running-sqltools-on-64bit-client/</id>
+        <content type="html"><![CDATA[<p><a href="http://www.sqltools.net/">SqlTools</a> is an extremely light weight and fast windows frontend for Oracle. <a href="http://www.sqltools-plusplus.org:7676/">SQLTools++</a> is based on it with fixing some bugs. I started to use it from years ago in Windows XP era and love it much more than <a href="http://www.oracle.com/technetwork/developer-tools/sql-developer/overview/index.html">Oracle SQL Developer</a> or <a href="http://wenye.infowww.quest.com/toad/">Toad</a>.</p>
+<p>However, it requires Oracle Client installed. I always have installed Oracle Server for development at local, so this is not an issue to me.</p>
+<p>About 3 years ago, I switched to Win 7 64bit and installed Oracle Server 64 bit for development. The SQLTools++ does not work any more with this error:</p>
+<blockquote>
+<p>The application was unable to start correctly (0xc000007b).</p>
+</blockquote>
+<p><img title="Running SqlTools on 64bit Oracle Client" src="http://wenye.info/stuff/sqltools-win-x64-error.png"></p>
+<p><strong> Solution </strong></p>
+<ol>
+<li><p>Download a 32bit <a href="http://www.oracle.com/technetwork/topics/winsoft-085727.html">Oracle Instant Client</a>.</p>
+</li>
+<li><p>Extract the Oracle Instant Client to a folder. E.g. <code>d:\oracle\instantclient_12_1\</code>.</p>
+</li>
+<li><p>Add the folder into system PATH.</p>
+</li>
+<li><p>Start SqlTools (or SqlTools++) again. It can be run up successfully.</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
+        <title>AtomikosSQLException: The underlying XA session is closed</title>
+        <link href="http://wenye.info/posts/atomikos-xa-session-is-closed/"/>
+        <updated>2014-02-01T16:00:00.000Z</updated>
+        <id>tag:wenye.info,2014-02-01,/posts/atomikos-xa-session-is-closed/</id>
+        <content type="html"><![CDATA[<p>My current project is using <a href="http://mybatis.github.io/mybatis-3/">Mybatis</a> for data persistence, and using <a href="http://www.atomikos.com/">Atomikos TransactionEssentials</a> as <a href="http://en.wikipedia.org/wiki/Two-phase_commit_protocol">2PC</a> transaction manager.</p>
+<p>In the testing site when there were a few peoples testing, following exception happened from time to time. But you could not always reproduce it.</p>
+<blockquote>
+<p>Caused by: com.atomikos.jdbc.AtomikosSQLException: The underlying XA session is closed
+  at com.atomikos.jdbc.AtomikosSQLException.throwAtomikosSQLException(AtomikosSQLException.java:44)
+   at com.atomikos.jdbc.AtomikosConnectionProxy.enlist(AtomikosConnectionProxy.java:214)
+   at com.atomikos.jdbc.AtomikosConnectionProxy.invoke(AtomikosConnectionProxy.java:138)
+   at $Proxy31.prepareStatement(Unknown Source)</p>
+</blockquote>
+<p>After investigation for a whole day, finally I found the place causing this error.</p>
+<pre><code class="lang-java">    public static List&lt;DynamicEntity&gt; findByQuery(final String queryId,
+            final Map&lt;String, Object&gt; params) throws DataException {
+        Connection conn = null;
+        SqlSession session = null;
+        try {
+            conn = DaoFactory.getInstance().getConnection();
+            session = DaoFactory.getSession(conn);
+            return session.selectList(queryId, params);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }</code></pre>
+<p><strong>RootCause</strong></p>
+<p>The line <code>session.close()</code> will close the DB connection implicitly (return to connection pool). If at the same time, another thread (ThreadB) is requesting a new DB connection, connection pool may return the same connection by Atomikos.</p>
+<p>The line <code>conn.close()</code> closes the connection again. (Ooops, your are right, it is closing the connection already using by ThreadB). Then if ThreadB tries to retrieve data by the connection, <code>The underlying XA session is closed</code> exception happens.</p>
+<p>After I tried to removed one line of them, the exception was gone.</p>
+]]></content>
+    </entry>
+    
+    <entry>
+        <title>用DocPad来写博客</title>
+        <link href="http://wenye.info/posts/201401-blogging-with-docpad/"/>
+        <updated>2014-01-16T16:00:00.000Z</updated>
+        <id>tag:wenye.info,2014-01-16,/posts/201401-blogging-with-docpad/</id>
+        <content type="html"><![CDATA[<p>用一个名言来重新开始这个Blog:</p>
+<blockquote>
+<p>有些事情你现在不过做，可能以后都没机会了!</p>
+</blockquote>
+<p>作为一个码农，深知写作对技术的重要性。曾经也安装过 <a href="http://wordpress.org">Wordpress</a> (主要是用来做网摘，写得较少)。后来在学习Ruby时候也在GitHub布署过 <a href="http://octopress.org/">Octopress</a>。Octopress的确是一个很酷的静态博客工具，开始在VMware中的OSX系统使用得很顺利。但后来偿试在Win7系统下发布的时候遇到UTF8编码及代码高亮的问题一直没有解决。</p>
+<p>最近偿试开始学习 <a href="http://mean.io/">MEAN</a> (Mongo, Express, Angular, Node)，中途也了解过一些目前流行的基于Node.js的静态网页生成框架。例如 <a href="http://zespia.tw/hexo/">Hexo</a>。Hexo跟Octopress很接近，通过文档很容易就能抢建出来一个博客。但折腾了几次以后，通过配置不能实现我想要的功能。跟Hexo作者沟通了几次之后也没能解决，不想也不会改它的源代码，只能放弃。</p>
+<blockquote>
+<p>其实就想把所有博客的文章放到子目录wenye.info/blog/下面，然后首页wenye.info及其他页面可以自己定制。</p>
+</blockquote>
+<p>最后能过Google发现了 <a href="http://docpad.org">DocPad</a>，另个一个貌似很强大的基于Node.js的网页框架。生成静态页只是其中的一个功能。看了<a href="http://www.ewal.net/">Erv Walter</a>大师的简洁的效果以后就突然喜欢上了它，决定用它来搭建新的博客。页面就先直接使用Erv大师的了(他的整个个人博客都是MIT许可)。希望从现在开始，可以认真的码一些字。</p>
+<p>码农，必须以HelloWorld开始:</p>
+<pre><code class="lang-java">public final class HelloWorld {
+
+    public static void main(final String[] args) {
+        // TODO Auto-generated method stub
+        System.out.println(&quot;Hello World&quot;);
+    }
+
+}</code></pre>
+<p><img title="Blog with DocPad" src="http://wenye.info/stuff/docpad-logo.gif"></p>
+]]></content>
+    </entry>
+    
+</feed>

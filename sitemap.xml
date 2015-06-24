@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url> <loc>http://wenye.info/</loc> <changefreq>daily</changefreq> <priority>0.8</priority> </url>
+<url> <loc>http://wenye.info/blog/</loc> <changefreq>daily</changefreq> <priority>0.8</priority> </url>
+<url> <loc>http://wenye.info/archives/</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
+<url> <loc>http://wenye.info/posts/201401-blogging-with-docpad/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/posts/atomikos-xa-session-is-closed/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/posts/running-sqltools-on-64bit-client/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/posts/setup-nexus-as-local-maven-repository/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/tags/build/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/tags/nexus/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/tags/maven/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/tags/gradle/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/tags/sql/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/tags/atomikos/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/tags/mybatis/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/tags/xa/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>http://wenye.info/tags/blog/</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+</urlset>

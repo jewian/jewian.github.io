@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>用DocPad来写博客 - 业言 Randy Huang</title>
+    <meta name="author" content="Randy Huang">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/feed.xml" rel="alternate" title="Ewal.net" type="application/atom+xml">
+    <link href="/favicon.png" rel="shortcut icon">
+
+    <!-- Google Font -->
+    <link href='http://fonts.googleapis.com/css?family=Tangerine' rel='stylesheet' type='text/css'>
+    <!-- Bootstrap -->
+    <link href="/styles/site.css" rel="stylesheet" media="screen">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/scripts/vendor/html5shiv.js"></script>
+    <script src="/scripts/vendor/respond.min.js"></script>
+    <![endif]-->
+
+    <meta name="generator" content="DocPad v6.54.2" />
+    
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><span class="text-primary sign">业言 Randy Huang</span></a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+            <ul class="nav navbar-nav">
+                <!--<li><a href="/">Blog</a></li>-->
+                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/archives/">Archives</a></li>
+                <li class="hidden-xs">
+                    <a href="/feed.xml" class="rss"><span class="icon icon-feed"></span></a>
+                    <a href="https://github.com/jewian" class="github"><span class="icon icon-github"></span></a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right hidden-xs" role="search" action="http://google.com/search"
+                  method="get">
+                <div class="form-group">
+                    <input type="search" name="q" class="form-control" placeholder="Search">
+                    <input type="hidden" name="q" value="site:wenye.info">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-10">
+            <article id="post" class="post">
+    <div class="post-date">Jan 17th, 2014</div>
+    
+    <h1>用DocPad来写博客</h1>
+    
+    <div class="post-content">
+        <p>用一个名言来重新开始这个Blog:</p>
+<blockquote>
+<p>有些事情你现在不过做，可能以后都没机会了!</p>
+</blockquote>
+<p>作为一个码农，深知写作对技术的重要性。曾经也安装过 <a href="http://wordpress.org">Wordpress</a> (主要是用来做网摘，写得较少)。后来在学习Ruby时候也在GitHub布署过 <a href="http://octopress.org/">Octopress</a>。Octopress的确是一个很酷的静态博客工具，开始在VMware中的OSX系统使用得很顺利。但后来偿试在Win7系统下发布的时候遇到UTF8编码及代码高亮的问题一直没有解决。</p>
+<p>最近偿试开始学习 <a href="http://mean.io/">MEAN</a> (Mongo, Express, Angular, Node)，中途也了解过一些目前流行的基于Node.js的静态网页生成框架。例如 <a href="http://zespia.tw/hexo/">Hexo</a>。Hexo跟Octopress很接近，通过文档很容易就能抢建出来一个博客。但折腾了几次以后，通过配置不能实现我想要的功能。跟Hexo作者沟通了几次之后也没能解决，不想也不会改它的源代码，只能放弃。</p>
+<blockquote>
+<p>其实就想把所有博客的文章放到子目录wenye.info/blog/下面，然后首页wenye.info及其他页面可以自己定制。</p>
+</blockquote>
+<p>最后能过Google发现了 <a href="http://docpad.org">DocPad</a>，另个一个貌似很强大的基于Node.js的网页框架。生成静态页只是其中的一个功能。看了<a href="http://www.ewal.net/">Erv Walter</a>大师的简洁的效果以后就突然喜欢上了它，决定用它来搭建新的博客。页面就先直接使用Erv大师的了(他的整个个人博客都是MIT许可)。希望从现在开始，可以认真的码一些字。</p>
+<p>码农，必须以HelloWorld开始:</p>
+<pre><code class="lang-java">public final class HelloWorld {
+
+    public static void main(final String[] args) {
+        // TODO Auto-generated method stub
+        System.out.println(&quot;Hello World&quot;);
+    }
+
+}</code></pre>
+<p><img title="Blog with DocPad" src="/stuff/docpad-logo.gif" /></p>
+
+    </div>
+    
+    <div class="post-tags">
+        Posted In: <a href='/tags/blog/'>Blog</a>
+    </div>
+    
+</article>
+            <div id="disqus_thread"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wenye';
+    var disqus_url = 'http://wenye.info/posts/201401-blogging-with-docpad/';
+    var disqus_identifier = disqus_url;
+    var disqus_title = '用DocPad来写博客';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+
+            <div id="me">
+</div>
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="navbar navbar-footer">
+        <p class="navbar-center navbar-text">Copyright &copy; 2014 <span class="sign">业言 Randy Huang</span></p>
+    </div>
+</div>
+
+
+
+<script src="/scripts/vendor/jquery-1.10.2.min.js"></script>
+<script src="/scripts/vendor/bootstrap.min.js"></script>
+<script src="/scripts/vendor/jquery.fancybox.pack.js"></script>
+<script src="/scripts/vendor/highlight.pack.js"></script>
+<script src="/scripts/vendor/coffee-script.js"></script>
+<script src="/scripts/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>用Sonatype Nexus来为Gradle搭建本地maven仓库 - 业言 Randy Huang</title>
+    <meta name="author" content="Randy Huang">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/feed.xml" rel="alternate" title="Ewal.net" type="application/atom+xml">
+    <link href="/favicon.png" rel="shortcut icon">
+
+    <!-- Google Font -->
+    <link href='http://fonts.googleapis.com/css?family=Tangerine' rel='stylesheet' type='text/css'>
+    <!-- Bootstrap -->
+    <link href="/styles/site.css" rel="stylesheet" media="screen">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/scripts/vendor/html5shiv.js"></script>
+    <script src="/scripts/vendor/respond.min.js"></script>
+    <![endif]-->
+
+    <meta name="generator" content="DocPad v6.54.2" />
+    
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><span class="text-primary sign">业言 Randy Huang</span></a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+            <ul class="nav navbar-nav">
+                <!--<li><a href="/">Blog</a></li>-->
+                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/archives/">Archives</a></li>
+                <li class="hidden-xs">
+                    <a href="/feed.xml" class="rss"><span class="icon icon-feed"></span></a>
+                    <a href="https://github.com/jewian" class="github"><span class="icon icon-github"></span></a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right hidden-xs" role="search" action="http://google.com/search"
+                  method="get">
+                <div class="form-group">
+                    <input type="search" name="q" class="form-control" placeholder="Search">
+                    <input type="hidden" name="q" value="site:wenye.info">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-10">
+            <article id="post" class="post">
+    <div class="post-date">Jun 20th, 2015</div>
+    
+    <h1>用Sonatype Nexus来为Gradle搭建本地maven仓库</h1>
+    
+    <div class="post-content">
+        <p>不知道什么原因,国很很少maven公共仓库(我是搜不到了). <a href="http://maven.oschina.net/content/groups/public/">oschina的公共仓库</a>在我这里也时快时慢,有时还不如直接用国外的.</p>
+<p>最近经常学习github上一些优秀例子,每次在本地build的时候都要漫长的下载依赖jar包的等待. 下载下来的项目基本都是基于<a href="https://maven.apache.org/">Maven</a>或<a href="https://gradle.org/">Gradle</a>. 由于Maven和Gradle的本地缓存位置不同,同一个依赖基本也要从远程仓库下载下来两次.</p>
+<p>参考了网上一些大神的做法,决定也使用<a href="http://www.sonatype.org/nexus/">Sonatype Nexus</a>来建立一个本地的Maven仓库(对自己来说就是本机). Maven官方也有<a href="https://maven.apache.org/repository-management.html">一篇文章</a>介绍建立本地仓库的好处.</p>
+<h2>1. 下载安装Sonatype Nexus</h2>
+<p>到<a href="http://www.sonatype.org/nexus/go/">Sonatype Nexus官网</a>可以选择下载tar.gz或zip压缩包. 按<a href="https://sonatype-download.global.ssl.fastly.net/nexus/oss/nexus-latest-bundle.tar.gz">这里</a>直接一下tar.gz格式的压缩包(国内最好使用迅雷等下载工具下载).</p>
+<p>解压之后进入<code>bin</code>目录下执行<code>nexus install</code>安装. 完成后会有一个名字为nexus的windows服务.</p>
+<blockquote>
+<p>cd nexus-2.11.2-06\bin</p>
+<p>nexus install</p>
+</blockquote>
+<h2>2. 启动Nexus服务</h2>
+<p>在<code>bin</code>目录下使用命令<code>nexus start</code>和<code>nexus stop</code>来启动和停止服务. (当然直接去windows服务那边启动停止也行)</p>
+<blockquote>
+<p>nexus start</p>
+</blockquote>
+<p>启动成功后,用浏览器就可以访问<code>localhost:8081/nexus</code>.</p>
+<p><img src="/stuff/nexus-welcome-page.png" alt="Nexus Welcome Page"></p>
+<p>至此,本地的maven仓库已经安装成功. 本地公共仓库地址为: <code>http://localhost:8081/nexus/content/groups/public/</code>. 如果需要新建仓库可以用admin/admin123登录.</p>
+<h2>3. 配置Gradle使用本地仓库</h2>
+<p>配置Gradle有两种方法.</p>
+<h1>3.1 简单配置</h1>
+<p>在每个项目的build.gradle声明使用本地maven仓库:</p>
+<pre><code class="lang-groovy">repositories {
+    maven {
+        url &quot;http://localhost:8081/nexus/content/groups/public&quot;
+    }
+}</code></pre>
+<h1>3.2 全局配置</h1>
+<p>通过全局配置,使本地所有的Gradle项目都默认使用本地仓库. 在(用户目录/.gradle)下的<code>init.gradle</code>(如果没有则新建一个)加入:</p>
+<pre><code class="lang-groovy">allprojects {
+  ext.RepoConfigurator = {
+    maven {
+      url = uri(&#39;http://localhost:8081/nexus/content/groups/public&#39;) }
+  }
+  buildscript.repositories RepoConfigurator
+  repositories RepoConfigurator
+}</code></pre>
+<p>推荐使用这种全局配置的方法,项目上传到github也不需要对build.grade文件做另外的修改.</p>
+<p>简单测试了一下,新建一个空的Gradle项目,build的时候能够去本地的Nexus仓库去下载依赖.</p>
+<blockquote>
+<p>gradle init --type java-library</p>
+<p>gradle build</p>
+</blockquote>
+<p><img src="/stuff/gradle-init-build.png" alt="测试本地Nexus仓库"></p>
+<h2>4. 存在问题</h2>
+<p>Nexus服务器会保存一份本地所有项目用过的依赖. Maven和Gradle也分别有自己的缓存. 这样最多一个依赖在本地就会有三份复制. 如何能够禁止缓存减少硬盘空间占用还值得研究.</p>
+<blockquote>
+<p>暂时还觉得不大可能,因为Maven和Gradle本地缓存还会被在Eclipse等IDE里面引用.</p>
+</blockquote>
+
+    </div>
+    
+    <div class="post-tags">
+        Posted In: <a href='/tags/build/'>Build</a>, <a href='/tags/nexus/'>Nexus</a>, <a href='/tags/maven/'>Maven</a>, <a href='/tags/gradle/'>Gradle</a>
+    </div>
+    
+</article>
+            <div id="disqus_thread"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wenye';
+    var disqus_url = 'http://wenye.info/posts/setup-nexus-as-local-maven-repository/';
+    var disqus_identifier = disqus_url;
+    var disqus_title = '用Sonatype Nexus来为Gradle搭建本地maven仓库';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+
+            <div id="me">
+</div>
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="navbar navbar-footer">
+        <p class="navbar-center navbar-text">Copyright &copy; 2014 <span class="sign">业言 Randy Huang</span></p>
+    </div>
+</div>
+
+
+
+<script src="/scripts/vendor/jquery-1.10.2.min.js"></script>
+<script src="/scripts/vendor/bootstrap.min.js"></script>
+<script src="/scripts/vendor/jquery.fancybox.pack.js"></script>
+<script src="/scripts/vendor/highlight.pack.js"></script>
+<script src="/scripts/vendor/coffee-script.js"></script>
+<script src="/scripts/site.js"></script>
+</body>
+</html>
